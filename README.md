@@ -2,7 +2,7 @@
 IRust vim plugin using deno
 
 ## Instalation
-Make sure `deno` is installed and then append these lines to vim configuration file:
+Make sure `deno` is installed and then append these lines to vim configuration file (or your plugin magnager equivalent):
 
 ```vim
 Plug 'vim-denops/denops.vim' "Allows using plugins written with deno
