@@ -8,6 +8,7 @@ Plug 'sigmaSd/irust-vim-plugin' "This actual plugin
 ```
 
 # Usage
+- Make sure that `local_sever` is set to `true` in IRust configuration file
 - Open a rust file
 - Run `:IRust` to start the repl
 
@@ -23,3 +24,6 @@ nnoremap <space>iw :IRustSendCurrentWord<CR>
 nnoremap <space>il :IRustSendCurrentLine<CR>
 vnoremap <space>is :IRustSendSelection<CR>
 ```
+
+**Demo:**
+<img src="https://github.com/sigmaSd/sigmaSd.github.io/raw/master/content/irust_book/assets/vim_plugin.gif"/>
