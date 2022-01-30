@@ -18,6 +18,7 @@ Now you can send input to the repl using different methods:
 - `:IRustSendCurrentWord` sends the word under the cursor
 - `:IRustSendCurrentLine` sends the current line
 - `:IRustSendSelection` sends the selected text
+- `:IRustSyncToCursor` copies the whole file to IRust buffer, and sets the cursor to the current line
 
 **Bindings example:**
 ```vim
@@ -25,6 +26,7 @@ nnoremap <space>ii :IRust<CR>
 nnoremap <space>ir :IRustReset<CR>
 nnoremap <space>iw :IRustSendCurrentWord<CR>
 nnoremap <space>il :IRustSendCurrentLine<CR>
+nnoremap <space>ic :IRustSyncToCursor<CR>
 vnoremap <space>is :IRustSendSelection<CR>
 ```
 

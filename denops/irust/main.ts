@@ -1,5 +1,6 @@
-import { Denops } from "https://deno.land/x/denops_std@v3.0.0/mod.ts";
+import { Denops } from "https://deno.land/x/denops_std/mod.ts";
 import * as fn from "https://deno.land/x/denops_std/function/mod.ts";
+import { execute } from "https://deno.land/x/denops_std/helper/mod.ts";
 
 export async function main(denops: Denops): Promise<void> {
   let port = 9000;
@@ -42,22 +43,24 @@ export async function main(denops: Denops): Promise<void> {
     async reset(): Promise<void> {
       send(":reset", port);
     },
+    async syncToCursor(): Promise<void> {
+      const currentLine = await fn.line(denops, ".");
+      const currentFilePath = await denops.eval('expand("%:p")') as string;
+
+      send(`:hard_load ${currentFilePath} ${currentLine - 1}`, port);
+    },
   };
 
-  await denops.cmd(
-    `command! -nargs=? IRust call denops#request('${denops.name}', 'startIRust', [<q-args>])`,
-  );
-  await denops.cmd(
-    `command! -range IRustSendSelection call denops#request('${denops.name}', 'sendSelection','')`,
-  );
-  await denops.cmd(
-    `command! IRustSendCurrentWord call denops#request('${denops.name}', 'sendCurrentWord','')`,
-  );
-  await denops.cmd(
-    `command! IRustSendCurrentLine call denops#request('${denops.name}', 'sendCurrentLine','')`,
-  );
-  await denops.cmd(
-    `command! IRustReset call denops#request('${denops.name}', 'reset','')`,
+  await execute(
+    denops,
+    `
+    command! -nargs=? IRust call denops#request('${denops.name}', 'startIRust', [<q-args>])
+    command! -range IRustSendSelection call denops#request('${denops.name}', 'sendSelection','')
+    command! IRustSendCurrentWord call denops#request('${denops.name}', 'sendCurrentWord','')
+    command! IRustSendCurrentLine call denops#request('${denops.name}', 'sendCurrentLine','')
+    command! IRustReset call denops#request('${denops.name}', 'reset','')
+    command! IRustSyncToCursor call denops#request('${denops.name}', 'syncToCursor','')
+    `,
   );
 }
 
