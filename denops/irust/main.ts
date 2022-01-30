@@ -4,21 +4,6 @@ import * as fn from "https://deno.land/x/denops_std/function/mod.ts";
 export async function main(denops: Denops): Promise<void> {
   let port = 9000;
   denops.dispatcher = {
-    async sendCurrentLine(): Promise<void> {
-      const currentLine = await fn.getline(denops, ".");
-      send(currentLine.trim(), port);
-    },
-    async sendCurrentWord(): Promise<void> {
-      const wordUnderCursor = await denops.eval('expand("<cword>")') as string;
-      send(wordUnderCursor, port);
-    },
-    async sendSelection(): Promise<void> {
-      const [_bufN, lineStart] = await fn.getpos(denops, "'<");
-      const [_bufN2, lineEnd] = await fn.getpos(denops, "'>");
-      const lines = (await fn.getline(denops, lineStart, lineEnd)).join("\n")
-        .trim();
-      send(lines, port);
-    },
     async startIRust(userPort: unknown): Promise<void> {
       if (userPort) {
         if (!isNumeric(userPort)) {
@@ -37,6 +22,21 @@ export async function main(denops: Denops): Promise<void> {
       // Scroll to bottom (TODO)
       // Restore focus to the original split
       await denops.cmd("wincmd w");
+    },
+    async sendCurrentLine(): Promise<void> {
+      const currentLine = await fn.getline(denops, ".");
+      send(currentLine.trim(), port);
+    },
+    async sendCurrentWord(): Promise<void> {
+      const wordUnderCursor = await denops.eval('expand("<cword>")') as string;
+      send(wordUnderCursor, port);
+    },
+    async sendSelection(): Promise<void> {
+      const [_bufN, lineStart] = await fn.getpos(denops, "'<");
+      const [_bufN2, lineEnd] = await fn.getpos(denops, "'>");
+      const lines = (await fn.getline(denops, lineStart, lineEnd)).join("\n")
+        .trim();
+      send(lines, port);
     },
   };
 
