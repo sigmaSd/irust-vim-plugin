@@ -62,12 +62,19 @@ export async function main(denops: Denops): Promise<void> {
 }
 
 async function send(lines: string, port: number): Promise<void> {
-  const con = await Deno.connect({
-    hostname: "127.0.0.1",
-    port,
-  });
-  await con.write(new TextEncoder().encode(lines));
-  con.close();
+  try {
+    const con = await Deno.connect({
+      hostname: "127.0.0.1",
+      port,
+    });
+    await con.write(new TextEncoder().encode(lines));
+    con.close();
+  } catch {
+    console.log(
+      "Failed to send input to IRust, make sure its running and that the port is correct.",
+    );
+    return;
+  }
 }
 
 function isNumeric(str: unknown) {
