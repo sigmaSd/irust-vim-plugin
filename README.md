@@ -2,6 +2,8 @@
 IRust vim plugin using deno
 
 ## Instalation
+Make sure `deno` is installed and then append these lines to vim configuration file:
+
 ```vim
 Plug 'vim-denops/denops.vim' "Allows using plugins written with deno
 Plug 'sigmaSd/irust-vim-plugin' "This actual plugin
@@ -20,6 +22,7 @@ Now you can send input to the repl using different methods:
 **Bindings example:**
 ```vim
 nnoremap <space>ii :IRust<CR>
+nnoremap <space>ir :IRustReset<CR>
 nnoremap <space>iw :IRustSendCurrentWord<CR>
 nnoremap <space>il :IRustSendCurrentLine<CR>
 vnoremap <space>is :IRustSendSelection<CR>
