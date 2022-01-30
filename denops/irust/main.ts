@@ -38,6 +38,10 @@ export async function main(denops: Denops): Promise<void> {
         .trim();
       send(lines, port);
     },
+    // deno-lint-ignore require-await
+    async reset(): Promise<void> {
+      send(":reset", port);
+    },
   };
 
   await denops.cmd(
@@ -51,6 +55,9 @@ export async function main(denops: Denops): Promise<void> {
   );
   await denops.cmd(
     `command! IRustSendCurrentLine call denops#request('${denops.name}', 'sendCurrentLine','')`,
+  );
+  await denops.cmd(
+    `command! IRustReset call denops#request('${denops.name}', 'reset','')`,
   );
 }
 
