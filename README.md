@@ -25,6 +25,7 @@ There are also commands to sync the current file to the repl
 
 Couple of caveat of sync:
 - Should be only used with `main.rs` file
+- The file should be already formatted with `cargo fmt` before using sync
 - `IRustSyncCrateToCursor` assumes a particular layout of the crate, it should at least have `$crate/src/main.rs` as an entry point
 - more..
 
