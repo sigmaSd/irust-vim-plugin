@@ -49,6 +49,12 @@ export async function main(denops: Denops): Promise<void> {
 
       send(`:hard_load ${currentFilePath} ${currentLine - 1}`, port);
     },
+    async syncCrateToCursor(): Promise<void> {
+      const currentLine = await fn.line(denops, ".");
+      const currentFilePath = await denops.eval('expand("%:p")') as string;
+
+      send(`:hard_load_crate ${currentFilePath} ${currentLine - 1}`, port);
+    },
   };
 
   await execute(
@@ -60,6 +66,7 @@ export async function main(denops: Denops): Promise<void> {
     command! IRustSendCurrentLine call denops#request('${denops.name}', 'sendCurrentLine','')
     command! IRustReset call denops#request('${denops.name}', 'reset','')
     command! IRustSyncToCursor call denops#request('${denops.name}', 'syncToCursor','')
+    command! IRustSyncCrateToCursor call denops#request('${denops.name}', 'syncCrateToCursor','')
     `,
   );
 }
