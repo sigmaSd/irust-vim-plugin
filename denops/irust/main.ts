@@ -4,19 +4,22 @@ import { execute } from "https://deno.land/x/denops_std/helper/mod.ts";
 
 export async function main(denops: Denops): Promise<void> {
   let port = 9000;
+  let irust = "irust";
+
   denops.dispatcher = {
-    async startIRust(userPort: unknown): Promise<void> {
+    async startIRust(args: unknown): Promise<void> {
+      const [userPort, userIrust] = (args as string).split(" ");
       if (userPort) {
-        if (!isNumeric(userPort)) {
-          throw "Port must be a number";
-        }
-        port = parseInt(userPort as string);
+        port = parseInt(userPort);
+      }
+      if (userIrust) {
+        irust = userIrust;
       }
 
       const lines = await denops.eval("&lines") as number;
       // Start the repl
       await denops.cmd(
-        ":bel split term://irust",
+        `:bel split term://${irust}`,
       );
       // Resize the repl window
       await denops.cmd(`resize ${lines / 4}`);
@@ -60,7 +63,7 @@ export async function main(denops: Denops): Promise<void> {
   await execute(
     denops,
     `
-    command! -nargs=? IRust call denops#request('${denops.name}', 'startIRust', [<q-args>])
+    command! -nargs=* IRust call denops#request('${denops.name}', 'startIRust', [<q-args>])
     command! -range IRustSendSelection call denops#request('${denops.name}', 'sendSelection','')
     command! IRustSendCurrentWord call denops#request('${denops.name}', 'sendCurrentWord','')
     command! IRustSendCurrentLine call denops#request('${denops.name}', 'sendCurrentLine','')
@@ -85,9 +88,4 @@ async function send(lines: string, port: number): Promise<void> {
     );
     return;
   }
-}
-
-function isNumeric(str: unknown) {
-  return !isNaN(str as number) &&
-    !isNaN(parseFloat(str as string));
 }
