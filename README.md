@@ -18,7 +18,15 @@ Now you can send input to the repl using different methods:
 - `:IRustSendCurrentWord` sends the word under the cursor
 - `:IRustSendCurrentLine` sends the current line
 - `:IRustSendSelection` sends the selected text
+
+There are also commands to sync the current file to the repl
 - `:IRustSyncToCursor` copies the whole file to IRust buffer, and sets its internal cursor to the current line (so variables in scope can be accessed)
+- `:IRustSyncCrateToCursor` copies the whole src directory and toml file to IRust, this is the same as `IRustSyncToCursor` but more powerful since it allows using files that have internal or external imports
+
+Couple of caveat of sync:
+- Should be only used with `main.rs` file
+- `IRustSyncCrateToCursor` assumes a particular layout of the crate, it should at least have `$crate/src/main.rs` as an entry point
+- more..
 
 **Bindings example:**
 ```vim
@@ -27,6 +35,7 @@ nnoremap <space>ir :IRustReset<CR>
 nnoremap <space>iw :IRustSendCurrentWord<CR>
 nnoremap <space>il :IRustSendCurrentLine<CR>
 nnoremap <space>ic :IRustSyncToCursor<CR>
+nnoremap <space>ick :IRustSyncCrateToCursor<CR>
 vnoremap <space>is :IRustSendSelection<CR>
 ```
 
